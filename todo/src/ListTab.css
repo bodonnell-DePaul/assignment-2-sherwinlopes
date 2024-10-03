@@ -1,0 +1,12 @@
+.col-md-8{
+    display: flex;
+}
+
+.list-group{
+    width: 100%;
+    padding-right: 20px;
+}
+
+.tab-content{
+    width: 100%;
+}
