@@ -1,60 +1,75 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Tab from 'react-bootstrap/Tab';
-import todos from './todoItems';
-
-
-
+import todosData from './todoItems';
 import './ListTab.css';
 
-
 function getColorVariant(dueDate) {
-    const currentDate = new Date();
-    const due = new Date(dueDate);
-    const timeDiff = (due - currentDate) / (1000 * 60 * 60 * 24); // milliseconds to days
+    const date = new Date();
+    const due_date = new Date(dueDate);
+    const new_date = (due_date - date) / (1000 * 60 * 60 * 24);
 
-    if (timeDiff > 7) {
-        return 'primary'; // More than 7 days
-    } else if (timeDiff <= 7 && timeDiff >= 4) {
-        return 'success'; // 4 to 7 days
-    } else if (timeDiff < 4 && timeDiff >= 2) {
-        return 'warning'; // 2 to 4 days
+    if (new_date > 7) {
+        return 'primary';
+    } else if (new_date <= 7 && new_date >= 4) {
+        return 'success';
+    } else if (new_date < 4 && new_date >= 2) {
+        return 'warning';
     } else {
-        return 'danger'; // Less than 2 days
+        return 'danger';
     }
 }
 
 function ListTab() {
-    return (
+    const [todos, setTodos] = useState(todosData);
 
+    const handleDateChange = (index, newDate) => {
+        const updatedTodos = [...todos];
+        updatedTodos[index].dueDate = newDate;
+        setTodos(updatedTodos);
+    };
+
+    const handleDescriptionChange = (index, newDescription) => {
+        const updatedTodos = [...todos];
+        updatedTodos[index].description = newDescription;
+        setTodos(updatedTodos);
+    };
+
+    return (
         <Tab.Container defaultActiveKey={todos[0].title}>
             <ListGroup>
-                {todos.map((todos, index) => (
+                {todos.map((todoItem, index) => (
                     <ListGroup.Item
                         key={index}
-                        eventKey={todos.title}
-                        variant={getColorVariant(todos.dueDate)}>
-                        {todos.title}
+                        eventKey={todoItem.title}
+                        variant={getColorVariant(todoItem.dueDate)}
+                    >
+                        {todoItem.title}
                     </ListGroup.Item>
                 ))}
             </ListGroup>
 
             <Tab.Content>
-                {todos.map((todos, index) => (
+                {todos.map((todoItem, index) => (
                     <Tab.Pane
                         key={index}
-                        eventKey={todos.title}>
-                        <p contentEditable="true">{todos.description}</p>
+                        eventKey={todoItem.title}>
+                        <p
+                            contentEditable="true"
+                            suppressContentEditableWarning={true}
+                            onChange={(e) => handleDescriptionChange(index, e.target.innerText)}
+                        >
+                            {todoItem.description}
+                        </p>
                         <input
                             type="date"
-                            defaultValue={todos.dueDate}
-                            onChange={(e) => { }} />
+                            defaultValue={todoItem.dueDate}
+                            onChange={(e) => handleDateChange(index, e.target.value)}
+                        />
                     </Tab.Pane>
                 ))}
             </Tab.Content>
         </Tab.Container>
-
     );
 }
 

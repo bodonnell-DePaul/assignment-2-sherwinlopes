@@ -1,9 +1,11 @@
+//Sherwin Sylvester Lopes
+//ID: 2172717
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import TodoList from './TodoList';
+import TodoList from './ToDoList';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
